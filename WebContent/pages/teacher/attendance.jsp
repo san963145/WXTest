@@ -167,6 +167,7 @@ function resetResult()
 			        <div class="col-md-2 col-md-offset-2">
 							  <button onclick="getStudentSignList()" class="btn btn-primary btn-block btn-flat">刷新</button>
 					</div>
+					<br>
 					<div class="col-md-2 col-md-offset-2">
 							  <button onclick="reset()" class="btn btn-primary btn-block btn-flat">系统重置</button>
 					</div>
