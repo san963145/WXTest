@@ -87,7 +87,27 @@ public class CheckServlet extends HttpServlet {
         }
         if(flag)   //已成功登录
         {
-           Process.sign(request, response, xmlMap, userID);        
+           String mode=(String) application.getAttribute("mode");
+           if(mode!=null)
+           {
+        	   if(mode.equals("option1"))  //签到模式
+        	   {
+        		   Process.sign(request, response, xmlMap, userID); 
+        	   }
+        	   else if(mode.equals("option2"))
+        	   {
+        		   
+        	   }
+        	   else if(mode.equals("option3"))
+        	   {
+        		   
+        	   }
+        	   else
+        	   {
+        		   String c="请等待教师进行系统设定.";
+        		   ReplyContent.generateXML(fromUserName, toUserName, c);
+        	   }
+           }                 
         }
         else      //未登录
         {

@@ -87,7 +87,7 @@
 				  <div class="small-box bg-green">
 					<div class="box-div">
 					  <h3>统计</h3>
-					  <p>综合统计分析子系统</p>
+					  <p>综合数据分析子系统</p>
 					</div>
 					<div class="icon">
 					  <i class="glyphicon glyphicon-signal"></i>
@@ -98,7 +98,7 @@
 			</div>
 			
 			<div class="box-set box-div bg-blue">
-			  <a href="pages/gradesSystem/gradesSystem.jsp">
+			  <a href="pages/teacher/config.jsp">
 				 <!-- small box -->
 				  <div class="small-box bg-blue">
 					<div class="box-div">
@@ -108,7 +108,7 @@
 					<div class="icon">
 					  <i class="glyphicon glyphicon-wrench"></i>
 					</div>
-					<a href="pages/gradesSystem/gradesSystem.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
+					<a href="pages/teacher/config.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
 			  </a>
 			</div>									
