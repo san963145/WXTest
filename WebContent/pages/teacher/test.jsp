@@ -84,7 +84,7 @@ function check()
 			      <!-- 1-->
                   <li class="active">
                      <a href="#home" data-toggle="tab">
-                                                                            即时应答
+                                                                            应答
                      </a>
                    </li>
 				   
@@ -116,14 +116,14 @@ function check()
                   <li class="dropdown">
                        <a href="#" id="myTabDrop3" class="dropdown-toggle" 
          data-toggle="dropdown">
-                                                                                        统计答题结果<b class="caret">
+                                                                                        统计<b class="caret">
                        </b>
                       </a>
                       
                       <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop3">
                          <li><a href="#statistics" tabindex="-1" data-toggle="tab">
                                                                                           
-                                                                                      学生答案统计</a>
+                                                                                      学生答案汇总</a>
                           </li>
 						  <li><a href="TestStatistics">
                                                                                           获取最新数据</a>

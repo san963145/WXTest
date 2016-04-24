@@ -181,7 +181,7 @@ function check()
 	                <form action="AddUser" method="post" onsubmit="return check()">
         <div class="form-group has-feedback">
             <input type="text" class="form-control" id="userID" name="userID" placeholder="登录ID">
-            <span class="glyphicon glyphicon-flag form-control-feedback"></span>
+            <span class="glyphicon glyphicon-tag form-control-feedback"></span>
           </div>
           
     
