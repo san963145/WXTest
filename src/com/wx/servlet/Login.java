@@ -1,7 +1,7 @@
 package com.wx.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,11 +9,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.wx.dao.StudentInfoDao;
+import com.wx.dao.LessonDao;
+import com.wx.dao.TeachClassDao;
 import com.wx.dao.TeacherInfoDao;
-import com.wx.daoImpl.StudentInfoDaoImpl;
+import com.wx.daoImpl.LessonDaoImpl;
+import com.wx.daoImpl.TeachClassDaoImpl;
 import com.wx.daoImpl.TeacherInfoDaoImpl;
+import com.wx.util.ClearApplicationData;
+import com.wx.util.Consts;
 
 
 
@@ -23,6 +28,7 @@ import com.wx.daoImpl.TeacherInfoDaoImpl;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -36,8 +42,26 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		ServletContext application=(ServletContext) request.getServletContext();
+		String classID=request.getParameter("classID");		
+		application.setAttribute("classID", classID);
+		LessonDao lessonDao=new LessonDaoImpl();
+		long maxLessonID=lessonDao.getMaxLessonID(classID);
+		long curTime=System.currentTimeMillis();
+		if(curTime-maxLessonID>Consts.LESSONINTERVALTIME*60*1000)
+		{
+			lessonDao.add(classID);
+			long curLessonID=lessonDao.getMaxLessonID(classID);
+			application.setAttribute("lessonID", curLessonID);
+		}
+		else
+		{			
+			application.setAttribute("lessonID", maxLessonID);
+		}
+
+		request.getRequestDispatcher("pages/teacher/main.jsp").forward(request, response);		
 	}
 
 	/**
@@ -47,62 +71,44 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		ServletContext application=(ServletContext) request.getServletContext();
+		HttpSession session=request.getSession();
 		String userID=request.getParameter("userID");
 		String password=request.getParameter("password");
-		String role=request.getParameter("role");
-		String s="null";
-		String userName="null";
-		String openID="null";
-		StudentInfoDao dao=new StudentInfoDaoImpl();
-		TeacherInfoDao dao2=new TeacherInfoDaoImpl();
+		String result="null";
+		TeacherInfoDao dao=new TeacherInfoDaoImpl();
 		try {
-			if(role.equals("学生"))
-			{
-			 s=dao.checkStudentLogin(userID,password);
-			}
-			else
-			{
-				s=dao2.checkTeacherLogin(userID,password);
-			}
+
+			result=dao.checkTeacherLogin(userID,password);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		userName=s.split("#")[0];
-		openID=s.split("#")[1];
-		if(userName.equals("null"))
+		if(result.equals("null"))
 		{
 			request.setAttribute("result","2");
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 		else
 		{
-			request.setAttribute("result","1");
-			
-			
-			request.setAttribute("userName",userName);
-			if(role.equals("学生"))
+			ServletContext application=(ServletContext) request.getServletContext();
+			ClearApplicationData.clearWithoutTOpenID(application);
+			TeachClassDao teachClassDao=new TeachClassDaoImpl();
+			Map<String, String> classMap=null;
+			if(result.equals("1"))
 			{
-				HashMap<String,String>map=(HashMap<String,String>) application.getAttribute("map");
-				if(map!=null)
-				{
-					map.put(openID, userID);
-					application.removeAttribute("map");
-					application.setAttribute("map", map);
-				}
-				else
-				{
-					map=new HashMap<String,String>();
-					map.put(openID, userID);
-					application.setAttribute("map", map);
-				}
-			  request.getRequestDispatcher("loginSuccess.jsp").forward(request, response);
+				classMap=teachClassDao.getClassListByTid(userID);
 			}
-			else
+			else if(result.equals("2"))
 			{
-			   request.getRequestDispatcher("pages/teacher/main.jsp").forward(request, response);
+				classMap=teachClassDao.getClassListByTutorID(userID);
 			}
+			request.setAttribute("classMap",classMap);
+			session.setAttribute("role", result);
+			session.setAttribute("curUser", userID);
+			session.setMaxInactiveInterval(Consts.SESSIONTIME);
+			request.getRequestDispatcher("pages/teacher/enterClass.jsp").forward(request, response);
 		}		
 	}
 }
+
+

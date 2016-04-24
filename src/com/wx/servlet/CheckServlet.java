@@ -2,7 +2,6 @@ package com.wx.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -14,10 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.wx.dao.LessonSidListDao;
+import com.wx.dao.StudentInfoDao;
+import com.wx.dao.TClassStudentDao;
+import com.wx.dao.TeacherInfoDao;
+import com.wx.daoImpl.LessonSidListDaoImpl;
+import com.wx.daoImpl.StudentInfoDaoImpl;
+import com.wx.daoImpl.TClassStudentDaoImpl;
+import com.wx.daoImpl.TeacherInfoDaoImpl;
+import com.wx.util.ClearApplicationData;
+import com.wx.util.Consts;
+import com.wx.util.Process;
 import com.wx.util.ReceiveParse;
 import com.wx.util.ReplyContent;
 import com.wx.util.SignUtil;
-import com.wx.util.Process;
 
 /**
  * Servlet implementation class CheckServlet
@@ -73,49 +82,102 @@ public class CheckServlet extends HttpServlet {
         String toUserName=xmlMap.get("toUserName");
         String fromUserName=xmlMap.get("fromUserName");
         String content=xmlMap.get("content");
+        TClassStudentDao tClassStudentDao=new TClassStudentDaoImpl();
+        TeacherInfoDao teacherInfoDao=new TeacherInfoDaoImpl();
+        StudentInfoDao studentInfoDao=new StudentInfoDaoImpl();
+        LessonSidListDao lessonSidListDao=new LessonSidListDaoImpl();
         
-        HashMap<String,String> map=(HashMap<String,String>) application.getAttribute("map");
-        boolean flag=false;
-        String userID=null;
-        if(map!=null)
+        String classID=(String) application.getAttribute("classID");
+        if(classID!=null)   //课程已开启
         {
-        	if(map.containsKey(fromUserName))
-        	{
-        		flag=true;
-        		userID=map.get(fromUserName);
-        	}
-        }
-        if(flag)   //已成功登录
-        {
-           String mode=(String) application.getAttribute("mode");
-           if(mode!=null)
+           long lessonID=(long) application.getAttribute("lessonID");
+           long curTime=System.currentTimeMillis();
+           if(curTime-lessonID>Consts.DataTimeOut*60*1000)   //学生、教师发送信息,lesson过期,清空数据
            {
-        	   if(mode.equals("option1"))  //签到模式
+        	   ClearApplicationData.clear(application);
+        	   String replyContent="系统当前未开启任何课堂,请提供教职工ID";
+               String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
+               response.getWriter().write(xml);
+               return ;
+           }
+           String tOpenID=(String) application.getAttribute("tOpenID");
+           if(fromUserName.equals(tOpenID))     //教师发送信息
+           {
+        	  String title="教职工登录";
+         	  String url="http://1.myjavatest.applinzi.com/";
+         	  String replyContent="";
+         	  String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
+         	  response.getWriter().write(xml);
+         	  return ;
+           }
+           String sid=lessonSidListDao.checkOpenID(lessonID,fromUserName);
+           if(!sid.equals("null"))    //openID与sid已绑定
+           {
+        	   if(content.startsWith("Q:")||content.startsWith("q:"))
         	   {
-        		   Process.sign(request, response, xmlMap, userID); 
+        		   Process.feedBack(request, response, xmlMap, sid);
+        		   return;
         	   }
-        	   else if(mode.equals("option2"))
+        	   String mode=(String) application.getAttribute("mode");
+               if(mode!=null)
+               {
+            	   if(mode.equals("option1"))  //签到模式
+            	   {
+            		   Process.sign(request, response, xmlMap, sid); 
+            	   }
+            	   else if(mode.equals("option2"))
+            	   {
+            		   Process.test(request, response, xmlMap, sid); 
+            	   }
+            	   else if(mode.equals("option3"))
+            	   {
+            		   Process.feedBack(request, response, xmlMap, sid);
+            	   }            	   
+               } 
+               else
         	   {
-        		   
+        		   String c="当前课堂已开启,教师未发布任务!";
+        		   String xml=ReplyContent.generateXML(fromUserName, toUserName, c);
+        		   response.getWriter().write(xml);
         	   }
-        	   else if(mode.equals("option3"))
-        	   {
-        		   
-        	   }
-        	   else
-        	   {
-        		   String c="请等待教师进行系统设定.";
-        		   ReplyContent.generateXML(fromUserName, toUserName, c);
-        	   }
-           }                 
+           }
+           else       //未绑定
+           {
+        	   if(tClassStudentDao.checkUserId(classID, content))
+               {
+            	   lessonSidListDao.add(lessonID, content, fromUserName);
+            	   String sName=studentInfoDao.getNameById(content);
+            	   String t="该ID为学生,成功进入课堂,用户名:"+sName;
+            	   String replyContent="课堂中可随时提出问题,发送问题格式  Q:内容";
+             	   String xml=ReplyContent.generateXML(fromUserName, toUserName, t, replyContent);
+             	   response.getWriter().write(xml);
+                   
+               }
+               else
+               {
+            	   String replyContent="请提供正确的学生ID";
+                   String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
+                   response.getWriter().write(xml);
+               }  
+           }                                     
         }
-        else      //未登录
+        else      //课程未开启
         {
-          String replyContent="Received:"+content+"\r\n"+"Your openID:"+fromUserName;
-          String title="进入登录页面";
-          String url="http://1.myjavatest.applinzi.com";
-          String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
-          response.getWriter().write(xml); 
+          if(teacherInfoDao.checkTid(content))
+          {
+        	  application.setAttribute("tOpenID", fromUserName);
+        	  String title="教职工登录";
+        	  String url="http://1.myjavatest.applinzi.com/";
+        	  String replyContent="";
+        	  String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
+        	  response.getWriter().write(xml);
+          }
+          else
+          {
+        	  String replyContent="系统当前未开启任何课堂,请提供教职工ID";
+              String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
+              response.getWriter().write(xml); 
+          }          
         }
 	}
 

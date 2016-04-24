@@ -1,16 +1,20 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-   String path = request.getContextPath();
-   String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
- 
-%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="<%=basePath%>">
+    <base href="${basePath}">
+    
+    <c:if test="${empty sessionScope.curUser}">
+     <script>
+      location="../../index.jsp"
+    </script>
+    </c:if>
+    
     <meta charset="UTF-8">
     <title>课堂互动系统</title>
 	 <!-- 禁缓存-->
@@ -46,13 +50,29 @@
   </head>
   
   <body>
+  
     
-        <div>		
-        	
-			<div class="box-set box-div bg-red">
-			  <a href="pages/teacher/attendance.jsp">
-				<!-- small box -->
+        <div>	
+           <div class="box-set box-div bg-red">
+			  <a href="ConfigPage">
+				 <!-- small box -->
 				  <div class="small-box bg-red">
+					<div class="box-div">
+					  <h3>设置</h3>
+					  <p>系统设定</p>
+					</div>
+					<div class="icon">
+					  <i class="glyphicon glyphicon-wrench"></i>
+					</div>
+					<a href="ConfigPage" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
+				  </div>
+			  </a>
+			</div>	
+        	
+			<div class="box-set box-div bg-blue">
+			  <a href="SignPage">
+				<!-- small box -->
+				  <div class="small-box bg-blue">
 					<div class="box-div">
 					  <h3>签到</h3>
 					  <p>课堂签到子系统</p>
@@ -60,58 +80,44 @@
 					<div class="icon">
 					  <i class="glyphicon glyphicon-user"></i>
 					</div>
-					<a href="pages/teacher/attendance.jsp" class="small-box-footer">进入系统<i class="fa fa-arrow-circle-right"></i></a>
+					<a href="SignPage" class="small-box-footer">进入系统<i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
 			  </a>
 			</div>
 			
 			<div class="box-set box-div bg-yellow">
-			  <a href="pages/gradesSystem/gradesSystem.jsp">
+			  <a href="TestPage">
 				 <!-- small box -->
 				  <div class="small-box bg-yellow">
 					<div class="box-div">
-					  <h3>测试</h3>
+					  <h3>答题</h3>
 					  <p>课堂应答子系统</p>
 					</div>
 					<div class="icon">
 					  <i class="glyphicon glyphicon-pencil"></i>
 					</div>
-					<a href="pages/gradesSystem/gradesSystem.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
+					<a href="TestPage" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
 			  </a>
 			</div>
 	
 			<div class="box-set box-div bg-green">
-			  <a href="pages/gradesSystem/gradesSystem.jsp">
+			  <a href="pages/teacher/feedBack.jsp">
 				 <!-- small box -->
 				  <div class="small-box bg-green">
 					<div class="box-div">
-					  <h3>统计</h3>
-					  <p>综合数据分析子系统</p>
+					  <h3>反馈</h3>
+					  <p>学生问题反馈子系统</p>
 					</div>
 					<div class="icon">
 					  <i class="glyphicon glyphicon-signal"></i>
 					</div>
-					<a href="pages/gradesSystem/gradesSystem.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
+					<a href="pages/teacher/feedBack.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
 			  </a>
 			</div>
 			
-			<div class="box-set box-div bg-blue">
-			  <a href="pages/teacher/config.jsp">
-				 <!-- small box -->
-				  <div class="small-box bg-blue">
-					<div class="box-div">
-					  <h3>设置</h3>
-					  <p>系统配置</p>
-					</div>
-					<div class="icon">
-					  <i class="glyphicon glyphicon-wrench"></i>
-					</div>
-					<a href="pages/teacher/config.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
-				  </div>
-			  </a>
-			</div>									
+												
 		</div>
 
       <footer class="clear main-footer">      
@@ -134,4 +140,3 @@
    
   </body>
 </html>
-<!--

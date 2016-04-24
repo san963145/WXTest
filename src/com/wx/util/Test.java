@@ -1,11 +1,16 @@
 package com.wx.util;
 
+import org.apache.log4j.Logger;
+
 import com.wx.dao.StudentInfoDao;
 import com.wx.daoImpl.StudentInfoDaoImpl;
 
 
 
+
 public class Test {
+	
+	private static Logger logger = Logger.getLogger(Test.class);
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -23,5 +28,17 @@ public class Test {
 		
 		
 	}
-
+    
+	public static void log(String s)
+	{
+		logger.error(s);
+	}
+	public static void log(long s)
+	{
+		logger.error(s);
+	}
+	public static void log(int s)
+	{
+		logger.error(s);
+	}
 }

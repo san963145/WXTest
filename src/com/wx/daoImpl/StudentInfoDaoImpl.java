@@ -75,8 +75,7 @@ public class StudentInfoDaoImpl implements StudentInfoDao{
 		  return false;
     }
 	public boolean insert(String userId,String userName,String spwd,String className,String sex,String openID)
-	{
-		
+	{		
 		Connection conn=MyConnManager.getConnection();
 		try {
 			conn.setAutoCommit(false);
@@ -116,6 +115,37 @@ public class StudentInfoDaoImpl implements StudentInfoDao{
 			}
 		  }
 		  return false;
+	}
+	@Override
+	public String getNameById(String userId) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection(); 	
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("select * from StudentInfo where SID=?");
+			ps.setString(1, userId);
+			ps.execute();
+			ResultSet rs=ps.getResultSet();
+			String userName="null";
+			if(rs.next())
+			{
+				userName=rs.getString("SName");
+			}	
+			return  userName;
+		}  catch(Exception e)
+		  {
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		  return "null";
+		
 	}
 
 }

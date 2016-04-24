@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import com.wx.dao.MyConnManager;
 import com.wx.dao.TeacherInfoDao;
 
+
 public class TeacherInfoDaoImpl implements TeacherInfoDao{
 	
 	public String checkTeacherLogin(String tid,String tpwd)
@@ -15,19 +16,18 @@ public class TeacherInfoDaoImpl implements TeacherInfoDao{
 		Connection conn=MyConnManager.getConnection(); 	
 		try
 		{
-			PreparedStatement ps=conn.prepareStatement("select * from TeacherInfo where TID=? and TPWDMD5=?");
+			PreparedStatement ps=conn.prepareStatement("select * from TeacherInfo where TID=? and TPWD=?");
 			ps.setString(1, tid);
 			ps.setString(2, tpwd);
 			ps.execute();
 			ResultSet rs=ps.getResultSet();
-			String userName="null";
-			String openID="null";
+			String role="null";
 			if(rs.next())
 			{
-				userName=rs.getString("TName");
-				openID=rs.getString("OpenID");
+				Integer r=rs.getInt("ROLE");
+				role=r.toString();
 			}	
-			return  userName+"#"+openID;
+			return  role;
 		}  catch(Exception e)
 		  {
 			e.printStackTrace();
@@ -41,6 +41,81 @@ public class TeacherInfoDaoImpl implements TeacherInfoDao{
 			}
 		  }
 		  return "null";
+	}
+
+	@Override
+	public boolean checkTid(String tid) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection();					
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("select * from TeacherInfo where TID=?");
+			ps.setString(1, tid);
+			ps.execute();
+			ResultSet rs=ps.getResultSet();
+			String tName="null";
+			if(rs.next())
+			{
+				tName=rs.getString("TNAME");
+			}	
+			if(!tName.equals("null"))
+			{
+				return true;
+			}
+		}  catch(Exception e)
+		  {
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		  return false;
+	}
+
+	@Override
+	public boolean add(String userID, String password, int role) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection();
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("insert into TeacherInfo values(?,?,?,?)");
+			ps.setString(1, userID);
+			ps.setString(2, userID);
+			ps.setString(3, password);
+			ps.setInt(4, role);
+			ps.execute();
+			conn.commit();
+		    return true;
+		}  catch(Exception e)
+		  {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		return false;
 	}
 
 }

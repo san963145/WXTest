@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wx.util.Consts;
+
 /**
  * Servlet implementation class SetRandNum
  */
@@ -33,23 +35,29 @@ public class SetRandNum extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		ServletContext application=(ServletContext) request.getServletContext();
+
 		String randNum0=(String) application.getAttribute("randNum");
 		String randNum=(String)request.getParameter("randNum");
 		PrintWriter out=response.getWriter();
-		if(randNum0!=null)
-		{
-			out.print("2");
+
+			if(randNum0!=null)
+		   {
+			out.print("error");
 			out.close();
-		}
-		else
-		{
+		   }
+		    else
+		   {
 			application.setAttribute("randNum", randNum);
 			long t=System.currentTimeMillis();
-			application.setAttribute("initTime", t);			
-			out.print("1");
+			application.setAttribute("initSignTime", t);	
+			application.setAttribute("mode", "option1");
+			application.removeAttribute("stopSign");
+			application.removeAttribute("endSign");
+			out.print(Consts.SIGNTIMELIMIT);
 			out.close();			
-		}
+		   }
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

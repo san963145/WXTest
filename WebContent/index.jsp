@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.net.URLDecoder" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
    String path = request.getContextPath();
    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-   String result=(String)request.getAttribute("result");
+   session.setAttribute("basePath", basePath);   
 %>
 
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="<%=basePath%>">
+    <base href="${sessionScope.basePath }>">
     <meta charset="UTF-8">
     <title>课堂互动系统</title>
 	<!-- 禁缓存-->
@@ -48,7 +48,6 @@
 		}
 		var userID=document.getElementById("userID").value;
 		var password=document.getElementById("password").value;
-		var role=document.getElementById("role").value;
 		if(userName=="")
 	    {
 			alert("请输入用户名!");
@@ -57,11 +56,6 @@
 		else if(password=="")
 		{
 			alert("请输入密码!");
-			return false;
-		}
-		else if(password=="角色")
-		{
-			alert("请选择角色!");
 			return false;
 		}
 		else
@@ -95,22 +89,11 @@
             <input type="password" class="form-control" id="password" name="password" placeholder="密码">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
-          <div class="form-group has-feedback">                       
-								<select class="form-control" id="role" name="role" style="width: 100%;">								
-								  <option selected="selected">角色</option>								  
-								   <option>教师</option>
-							       <option>学生</option>								 							   
-								</select>
-          </div>
           
 		  <div class="row">            
 			<div class="col-xs-4">
               <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
-            </div><!-- /.col -->
-            
-            <div class="col-xs-4">
-              <button onclick="register()" class="btn btn-primary btn-block btn-flat">注册</button>
-            </div><!-- /.col -->
+            </div><!-- /.col -->           
             
           </div>	           
         </form>
@@ -127,10 +110,13 @@
     <script src="plugins/iCheck/icheck.min.js"></script>
     
   </body>
-  <%if(result!=null){if(result.equals("2")){%>
-    <script charset="UTF-8">
-        alert("用户名不存在或密码错误！");
-    </script>
-<%}} %>
+  <c:if test="${not empty result}">
+     <c:if test="${result=='2'}">
+         <script charset="UTF-8">
+            alert("用户名不存在或密码错误！");
+         </script>
+     </c:if>
+  </c:if>
+
 </html>
-<!--
+
