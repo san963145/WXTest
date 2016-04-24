@@ -17,6 +17,7 @@ public class ClearApplicationData {
 		application.removeAttribute("answer");
 		application.removeAttribute("title");
 		application.removeAttribute("number");
+		application.removeAttribute("curUser");
 	}
 	public static void clearWithoutTOpenID(ServletContext application)
 	{
@@ -26,6 +27,11 @@ public class ClearApplicationData {
 		application.removeAttribute("randNum");
 		application.removeAttribute("initSignTime");
 		application.removeAttribute("signMap");
+		application.removeAttribute("qid");
+		application.removeAttribute("answer");
+		application.removeAttribute("title");
+		application.removeAttribute("number");
+		application.removeAttribute("curUser");
 	}
 
 }

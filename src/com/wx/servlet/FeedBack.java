@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.wx.dao.FeedBackDao;
 import com.wx.daoImpl.FeedBackDaoImpl;
-import com.wx.util.Test;
 
 /**
  * Servlet implementation class FeedBack
@@ -52,7 +51,6 @@ public class FeedBack extends HttpServlet {
 		 if(s.toString().endsWith("#"))
 			 s.deleteCharAt(s.length()-1);
 		}
-		Test.log("lists: "+s.toString());
 		 PrintWriter out=response.getWriter();
 		 out.print(s.toString());
 		 out.close();

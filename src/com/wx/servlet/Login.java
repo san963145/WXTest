@@ -91,6 +91,29 @@ public class Login extends HttpServlet {
 		else
 		{
 			ServletContext application=(ServletContext) request.getServletContext();
+			boolean isBusy=false;
+			Long lessonID=(Long) application.getAttribute("lessonID");
+			if(lessonID!=null)
+			{
+				long curTime=System.currentTimeMillis();
+				if(curTime-lessonID<Consts.LESSONINTERVALTIME*60*1000)
+				{
+					String curUserID=(String) application.getAttribute("curUser");
+					if(curUserID!=null)
+					{
+						if(!curUserID.equals(userID))
+						{
+							isBusy=true;
+						}
+					}
+				}
+			}
+			if(isBusy)
+			{
+				request.setAttribute("result","busy");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
+				return ;
+			}
 			ClearApplicationData.clearWithoutTOpenID(application);
 			TeachClassDao teachClassDao=new TeachClassDaoImpl();
 			Map<String, String> classMap=null;
@@ -105,6 +128,7 @@ public class Login extends HttpServlet {
 			request.setAttribute("classMap",classMap);
 			session.setAttribute("role", result);
 			session.setAttribute("curUser", userID);
+			application.setAttribute("curUser", userID);
 			session.setMaxInactiveInterval(Consts.SESSIONTIME);
 			request.getRequestDispatcher("pages/teacher/enterClass.jsp").forward(request, response);
 		}		

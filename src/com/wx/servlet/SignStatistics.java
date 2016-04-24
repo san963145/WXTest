@@ -18,18 +18,17 @@ import com.wx.daoImpl.LessonSignRecordDaoImpl;
 import com.wx.daoImpl.TeachClassDaoImpl;
 import com.wx.util.TableGenerator;
 
-
 /**
- * Servlet implementation class SignPage
+ * Servlet implementation class SignStatistics
  */
-@WebServlet("/SignPage")
-public class SignPage extends HttpServlet {
+@WebServlet("/SignStatistics")
+public class SignStatistics extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SignPage() {
+    public SignStatistics() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,6 +38,7 @@ public class SignPage extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		ServletContext application=(ServletContext) request.getServletContext();
@@ -61,8 +61,7 @@ public class SignPage extends HttpServlet {
 			list.add(s[0]);
 			list.add(s[1]);
 			total=Integer.parseInt(s[1]);
-			String s1=String.format("%.1f", 100.0*signNum/(double)total)+"%";
-			list.add(s1);			
+			list.add(String.format("%.2f", 100.0*signNum/(double)total)+"%");
 			signStatistics1_firstTable_content.add(list);
 		}
 		String signStatistics1_firstTable=TableGenerator.generateTable("课程描述", 3, new String[]{"课程名","总人数","平均出勤率"}, signStatistics1_firstTable_content);
@@ -87,8 +86,7 @@ public class SignPage extends HttpServlet {
 		request.setAttribute("signStatistics2_firstTable", signStatistics2_firstTable);
 		request.setAttribute("signStatistics2_secondTable", signStatistics2_secondTable);
 		request.setAttribute("signStatistics1_secondTable_content", signStatistics1_secondTable_content);
-		request.getRequestDispatcher("pages/teacher/sign.jsp").forward(request, response);
-		
+		request.getRequestDispatcher("pages/teacher/signStatistics.jsp").forward(request, response);
 	}
 
 	/**

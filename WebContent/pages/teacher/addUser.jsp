@@ -83,7 +83,7 @@ function check()
 			    <ul id="myTab" class="nav nav-pills col-xs-offset-1">
 			 
 			        <!-- 1-->
-                  <li class="active">
+                  <li>
                      <a href="#home" data-toggle="tab">
                                                                                     模式设定
                      </a>
@@ -92,7 +92,7 @@ function check()
                    <!-- 2-->
                  <c:if test="${not empty sessionScope.role}">
                      <c:if test="${role=='1'}">
-                      <li class="dropdown">
+                      <li class="dropdown active">
                          <a href="#addUser"  data-toggle="tab">
                                                                                            添加用户
                        
@@ -127,7 +127,7 @@ function check()
 			 <hr style="height:1px;border:none;border-top:1px solid #cccccc;" />
 			 
 	    <div id="myTabContent" class="tab-content">
-			 <div id="home" class="tab-pane fade in active">
+			 <div id="home" class="tab-pane fade">
 				<div class="row" id="radio1">
 				  <div class="col-md-4 col-md-offset-2"  id="curMode">
 				  
@@ -176,7 +176,7 @@ function check()
 			  <c:if test="${not empty sessionScope.role}">
                      <c:if test="${role=='1'}">
                       
-                      <div id="addUser" class="login-box-body tab-pane fade">
+                      <div id="addUser" class="login-box-body tab-pane fade in active">
 				    <h3 class="text-center"> 添加助教信息</h3>
 	                <form action="AddUser" method="post" onsubmit="return check()">
         <div class="form-group has-feedback">
@@ -245,4 +245,3 @@ function check()
      </c:choose>
   </c:if>
 </html>
-

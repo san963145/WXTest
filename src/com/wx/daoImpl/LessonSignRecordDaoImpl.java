@@ -69,7 +69,7 @@ public class LessonSignRecordDaoImpl implements LessonSignRecordDao{
 				Integer signCount=rs.getInt("SIGNCOUNT");
                 Double signRate=(double)signCount/(double)total;
 				list.add(signCount.toString());
-				list.add(String.format("%.2f", signRate*100.0)+"%");
+				list.add(String.format("%.1f", signRate*100.0)+"%");
 				result.add(list);
 				count++;
 			}	

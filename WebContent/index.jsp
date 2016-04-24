@@ -116,6 +116,11 @@
             alert("用户名不存在或密码错误！");
          </script>
      </c:if>
+     <c:if test="${result=='busy'}">
+         <script charset="UTF-8">
+            alert("系统忙！");
+         </script>
+     </c:if>
   </c:if>
 
 </html>

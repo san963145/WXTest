@@ -44,7 +44,7 @@ public class TestStatistics extends HttpServlet {
 		Long qid=(Long) application.getAttribute("qid");
 		if(qid==null)
 		{
-			request.getRequestDispatcher("pages/teacher/test.jsp").forward(request, response);
+			request.getRequestDispatcher("pages/teacher/testStatistics.jsp").forward(request, response);
 		}
 		else
 		{
@@ -70,7 +70,7 @@ public class TestStatistics extends HttpServlet {
 			
 			request.setAttribute("table1", table1);
 			request.setAttribute("table2", table2);
-			request.getRequestDispatcher("pages/teacher/test.jsp").forward(request, response);
+			request.getRequestDispatcher("pages/teacher/testStatistics.jsp").forward(request, response);
 		}
 	}
 

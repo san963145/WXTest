@@ -66,7 +66,6 @@ public class AddUser extends HttpServlet {
 				classID=entry.getKey();
 			}
 		}
-		Test.log("1classID: "+classID);
 		teachClassDao.setTutorID(classID, userID);
 		boolean flag=teacherInfoDao.add(userID, password, 2);
 		Test.log("flag: "+flag);
@@ -78,7 +77,7 @@ public class AddUser extends HttpServlet {
 		{
 			request.setAttribute("result", "1");
 		}
-		request.getRequestDispatcher("pages/teacher/config.jsp").forward(request, response);
+		request.getRequestDispatcher("pages/teacher/addUser.jsp").forward(request, response);
 	}
 
 }

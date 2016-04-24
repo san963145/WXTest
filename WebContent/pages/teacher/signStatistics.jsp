@@ -52,13 +52,13 @@
              <ul id="myTab" class="nav nav-pills col-xs-offset-1">
 			 
 			        <!-- 1-->
-                  <li class="active">
+                  <li>
                      <a href="#home" data-toggle="tab">
                                                                                     签到
                      </a>
                    </li>
 				   <!-- 2-->
-                  <li class="dropdown">
+                  <li class="dropdown active">
                        <a href="#" id="myTabDrop1" class="dropdown-toggle" 
          data-toggle="dropdown">
                                                                                          统计<b class="caret">
@@ -66,7 +66,7 @@
                       </a>
                       
                       <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-                         <li><a href="SignStatistics">
+                         <li><a href="SignStatistics" tabindex="-1" data-toggle="tab">
                                                                                                    历史签到记录</a>
                           </li>
                             <li><a href="#statistics_second" tabindex="-1" data-toggle="tab">
@@ -104,7 +104,7 @@
        
 		
 		<div id="myTabContent" class="tab-content">
-             <div class="tab-pane fade in active" id="home">
+             <div class="tab-pane fade" id="home">
                  <div class="container">
 						<div class="row">
 						  <div class="col-xs-4 ">
@@ -157,9 +157,24 @@
 			
 			
 			
-			<div class="tab-pane fade" id="statistics_first">
+			<div class="tab-pane fade in active" id="statistics_first">
 			   <div class="container">
-			  
+			   <div class="row">
+				  <div class="col-xs-10 col-xs-offset-1">
+			      
+				        <div class="box box-primary">
+				            <div class="box-header">
+				              <h4 class="box-title text-center"><small>历史Lesson出勤率</small></h4>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				            	<canvas id="lineChart"></canvas>
+				            </div>
+				            
+			            </div>   		     
+				   
+				  </div>
+			     </div>  <!--row -->
 			     
 			    <div class="row">
 				  <div class="col-xs-10 col-xs-offset-1">
@@ -201,7 +216,55 @@
 
 	</div>		
 	
-	
+	<%
+  ArrayList<ArrayList<String>> lists=(ArrayList<ArrayList<String>>)request.getAttribute("signStatistics1_secondTable_content");
+  String lessons="";
+  String datas="";
+  for(int i=0;i<lists.size();i++)
+  {
+	  ArrayList<String>list=lists.get(i);
+	  lessons+=("\""+list.get(0)+"\",");
+	  String s=list.get(2);
+	  s=s.substring(0,s.length()-1);
+	  Double d=Double.parseDouble(s)/100.0;
+	  String v=String.format("%.2f", d);
+	  datas+=(v+",");
+  }
+  
+%>
+ <script>
+
+	 var linedata = {
+				labels : [<%=lessons%>],
+				datasets : [
+					{
+						fillColor : "#8470ff",
+						strokeColor : "#8470ff",
+						pointColor : "#8470ff",
+						pointStrokeColor : "#fff",
+						data : [<%=datas%>]
+					}
+				]
+			};
+			var lineChartOptions = {
+					   scaleShowGridLines : true,
+				       scaleShowHorizontalLines: true,
+				       scaleShowVerticalLines: true,
+				        bezierCurve : false,
+				        pointDot : true,
+				        pointDotStrokeWidth : 1,
+				       datasetStroke : true,
+				       datasetFill : false,
+					   responsive: true,
+
+	     	
+			}
+			var lineChartCanvas = document.getElementById("lineChart").getContext("2d");
+	     var lineChart = new Chart(lineChartCanvas).Line(linedata,lineChartOptions); 
+
+      
+ </script>
  </body>
 
 </html>
+
