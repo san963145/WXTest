@@ -6,7 +6,7 @@
 
 <html>
   <head>
- 
+
     <base href="${sessionScope.basePath}">
     <c:if test="${empty sessionScope.curUser}">
      <script>
@@ -126,12 +126,12 @@
 					<div class="row">
 					  <div class="form-group col-xs-7 ">
 					      <label >学生签到记录</label>				       
-				          <textarea  id="textarea" class="form-control"  rows="14"></textarea>
+				          <textarea  id="textarea" readonly="readonly" class="form-control"  rows="14"></textarea>
 					  </div><!-- /.form-group -->
 					   
 					  <div class="form-group col-xs-5 ">
 					    <label >未签到学生列表</label>				       
-				        <textarea  id="textarea2" class="form-control"  rows="14"></textarea>			       				       
+				        <textarea  id="textarea2" readonly="readonly" class="form-control"  rows="14"></textarea>			       				       
 			         </div><!-- /.form-group -->
 			        </div><!-- /.row -->
 			        
@@ -205,4 +205,3 @@
  </body>
 
 </html>
-<!--  

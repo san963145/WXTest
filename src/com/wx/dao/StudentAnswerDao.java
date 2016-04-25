@@ -11,4 +11,5 @@ public interface StudentAnswerDao {
     public ArrayList<String> getListByQid(long qid);
     public int getCorrectNumByQid(long qid);
     public ArrayList<ArrayList<String>> getAnswerListByQid(long qid);
+    public ArrayList<ArrayList<String>> getNoAnswerListByQid(long qid,long lessonID);  //在线学生中未答题学生列表
 }

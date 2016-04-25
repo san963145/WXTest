@@ -43,18 +43,31 @@ function submit()
 {
 	if(check())
 	{
-		  var randNum=document.getElementById("randNum").value.trim();
+		var randNum=document.getElementById("randNum").value.trim();
 		  x.open("GET","SetRandNum?randNum="+randNum,true);
 		  x.onreadystatechange=update;
-		  x.send();
+		  x.send(); 		  
 	}		  
 }
 function update()
 {
 	if(x.readyState==4 && x.status==200)
-	{
-		//添加
-		if(x.responseText!="error")      
+	{		
+		if(x.responseText=="error")
+		{
+			alert("请勿多次设置随机数！");
+		}
+		else if(x.responseText=="signed")
+		{
+			if(confirm("确定重新签到？"))
+			{
+				  var randNum=document.getElementById("randNum").value.trim();
+				  x.open("GET","SetRandNum?randNum="+randNum+"&reSign=1",true);
+				  x.onreadystatechange=update;
+				  x.send(); 
+			}
+		}
+		else    
 		{
 			//document.getElementById("textarea").innerHTML+=x.responseText;
 			signTimeLimit=parseInt(x.responseText)*60;
@@ -62,10 +75,6 @@ function update()
 			interval=setInterval("getStudentSignList()",2000);
 			timer=setTimeout(getAbsenceList, 2*60*1000);
 			alert("设置成功！");
-		}
-		else if(x.responseText=="error")
-		{
-			alert("请勿多次设置随机数！");
 		}
 
 	}
@@ -81,15 +90,13 @@ function getStudentSignListResult()
 {
 	var list=new Array();
 	list=y.responseText.split("#");
-	if(list.length>0)
+	for(i=0;i<list.length;i++)
 	{
-		document.getElementById("textarea").innerHTML=list[0];
-		document.getElementById("textarea").innerHTML+='\r\n';
-	}
-	for(i=1;i<list.length;i++)
-	{
-		document.getElementById("textarea").innerHTML+=(list[i]);
-		document.getElementById("textarea").innerHTML+='\r\n';
+		if(document.getElementById("textarea").innerHTML.indexOf(list[i])<0)
+		{
+			document.getElementById("textarea").innerHTML+=(list[i]);
+			document.getElementById("textarea").innerHTML+='\r\n';
+		}		
 	}
 }
 function getAbsenceList()
@@ -144,6 +151,7 @@ function stopSignResult()
 		clearInterval(watch);
 		clearTimeout(timer);		
 		getAbsenceList();		
+		
 	}
 }
 function cal()

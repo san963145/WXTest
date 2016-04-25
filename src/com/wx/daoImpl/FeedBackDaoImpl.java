@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import com.wx.dao.FeedBackDao;
 import com.wx.dao.MyConnManager;
 import com.wx.dao.StudentInfoDao;
-import com.wx.util.Test;
 
 public class FeedBackDaoImpl implements FeedBackDao{
 

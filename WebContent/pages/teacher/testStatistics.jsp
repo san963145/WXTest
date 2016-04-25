@@ -181,7 +181,7 @@ function check()
 				 <div class="row">
 			       <div class="form-group col-xs-12">
 					      <label >学生答题结果</label>				       
-				          <textarea  id="textarea" class="form-control"  rows="14"></textarea>
+				          <textarea  id="textarea" readonly="readonly" class="form-control"  rows="14"></textarea>
 				   </div>
 				 </div>   
                  <div class="row">
@@ -310,6 +310,14 @@ function check()
 				   
 				  </div>
 			     </div>  <!--row -->
+			     
+			     <div class="row">
+				  <div class="col-xs-10 col-xs-offset-1">
+				   
+				    ${table3}
+				   
+				  </div>
+			     </div>  <!--row -->
                 
     </div>   <!--container -->
                </c:if>
@@ -340,4 +348,3 @@ function check()
      </c:choose>
   </c:if>
 </html>
-<!--  

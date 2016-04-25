@@ -245,4 +245,3 @@ function check()
      </c:choose>
   </c:if>
 </html>
-<!--  

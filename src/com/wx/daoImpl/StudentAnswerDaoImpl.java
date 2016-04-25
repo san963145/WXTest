@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.wx.dao.MyConnManager;
 import com.wx.dao.StudentAnswerDao;
+import com.wx.dao.StudentInfoDao;
 
 public class StudentAnswerDaoImpl implements StudentAnswerDao{
 
@@ -249,6 +250,52 @@ public class StudentAnswerDaoImpl implements StudentAnswerDao{
 				list.add(answer);
 				list.add(c.toString());
 				result.add(list);
+			}	
+			return  result;
+		}  catch(Exception e)
+		  {
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		  return new ArrayList<ArrayList<String>>();
+	}
+
+
+
+	@Override
+	public ArrayList<ArrayList<String>> getNoAnswerListByQid(long qid,long lessonID) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection(); 	
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("select * from LessonSidList where LESSONID=?");
+			ps.setLong(1, lessonID);
+			ps.execute();
+			ResultSet rs=ps.getResultSet();
+			ArrayList<ArrayList<String>> result=new ArrayList<ArrayList<String>>();
+			StudentInfoDao dao=new StudentInfoDaoImpl();
+			while(rs.next())
+			{
+				ArrayList<String> list=new ArrayList<String>();
+				String sid=rs.getString("SID");
+				if(this.checkSidByQid(qid, sid))
+				{
+					continue;
+				}
+				else
+				{
+					String sName=dao.getNameById(sid);
+					list.add(sid);
+					list.add(sName);					
+					result.add(list);
+				}				
 			}	
 			return  result;
 		}  catch(Exception e)

@@ -88,4 +88,40 @@ public class LessonAbsenceSidListDaoImpl implements LessonAbsenceSidListDao{
 		  return new ArrayList<ArrayList<String>>();
 	}
 
+	@Override
+	public void delete(long lessonID) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection();
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("delete from LessonAbsenceSidList where LESSONID=?");
+			ps.setLong(1, lessonID);
+			ps.execute();
+			conn.commit();			
+		}  catch(Exception e)
+		  {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+	}
+
 }

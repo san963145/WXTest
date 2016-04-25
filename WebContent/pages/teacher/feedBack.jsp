@@ -84,7 +84,7 @@
 				 <div class="row">
 			       <div class="form-group col-xs-12">
 					      <label >学生问题反馈</label>				       
-				          <textarea  id="textarea" class="form-control"  rows="14"></textarea>
+				          <textarea  id="textarea" readonly="readonly" class="form-control"  rows="14"></textarea>
 				   </div>
 				 </div>   
                  <div class="row">
@@ -102,4 +102,3 @@
 	</div>		
  </body>
 </html>
-<!--  

@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.wx.dao.LessonSidListDao;
+import com.wx.dao.QuestionDao;
 import com.wx.dao.StudentAnswerDao;
 import com.wx.daoImpl.LessonSidListDaoImpl;
 import com.wx.daoImpl.QuestionDaoImpl;
 import com.wx.daoImpl.StudentAnswerDaoImpl;
 import com.wx.util.TableGenerator;
+
 
 /**
  * Servlet implementation class TestStatistics
@@ -42,8 +44,11 @@ public class TestStatistics extends HttpServlet {
 		ServletContext application=(ServletContext) request.getServletContext();
 		long lessonID=(long) application.getAttribute("lessonID");
 		Long qid=(Long) application.getAttribute("qid");
+		QuestionDao questionDao=new QuestionDaoImpl();
+		ArrayList<String> questionList=questionDao.getTitlesByLesson(lessonID);
+		request.setAttribute("questionList", questionList);
 		if(qid==null)
-		{
+		{			
 			request.getRequestDispatcher("pages/teacher/testStatistics.jsp").forward(request, response);
 		}
 		else
@@ -68,8 +73,13 @@ public class TestStatistics extends HttpServlet {
 			ArrayList<ArrayList<String>> table2_content=studentAnswerDao.getAnswerListByQid(qid);
 			String table2=TableGenerator.generateTable("学生答题结果", 2, new String[]{"答题结果","人数"}, table2_content);
 			
+			ArrayList<ArrayList<String>> table3_content=studentAnswerDao.getNoAnswerListByQid(qid,lessonID);
+			String table3=TableGenerator.generateTable("未答题学生列表", 2, new String[]{"学号","姓名"}, table3_content);
+
 			request.setAttribute("table1", table1);
 			request.setAttribute("table2", table2);
+			request.setAttribute("table3", table3);
+			
 			request.getRequestDispatcher("pages/teacher/testStatistics.jsp").forward(request, response);
 		}
 	}

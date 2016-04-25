@@ -116,4 +116,40 @@ public class StudentCheckinDaoImpl implements StudentCheckinDao{
 		  return 0;
 	}
 
+	@Override
+	public void delete(long lessonID) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection();
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("delete from StudentCheckin where LESSONID=?");
+			ps.setLong(1, lessonID);
+			ps.execute();
+			conn.commit();			
+		}  catch(Exception e)
+		  {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+	}
+
 }
