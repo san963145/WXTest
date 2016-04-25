@@ -6,7 +6,7 @@
 <html>
   <head>
  
-    <base href="${basePath}">
+    <base href="${sessionScope.basePath}">
     <c:if test="${empty sessionScope.curUser}">
      <script>
       location="../../index.jsp"
@@ -14,7 +14,7 @@
     </c:if>
 
     <meta charset="UTF-8">
-    <title>课堂签到子系统</title>
+    <title> 课堂答题子系统</title>
 	 <!-- 禁缓存-->
     <meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -110,9 +110,14 @@ function check()
                         </ul>
                   </li>
 				   
+				   <!-- 3-->
+                  <li >
+                     <a href="TestStatistics">
+                                                                            统计
+                     </a>
+                   </li>
 				   
-				   
-				  <!--3-->
+				  <!--3
                   <li class="dropdown">
                        <a href="#" id="myTabDrop3" class="dropdown-toggle" 
          data-toggle="dropdown">
@@ -131,7 +136,7 @@ function check()
                             
                         </ul>
                   </li>
-                  
+                  -->
                    <!-- 4-->
                   <li class="dropdown">
                         <a href="#" id="myTabDrop2" class="dropdown-toggle" 
@@ -335,3 +340,4 @@ function check()
      </c:choose>
   </c:if>
 </html>
+<!--  

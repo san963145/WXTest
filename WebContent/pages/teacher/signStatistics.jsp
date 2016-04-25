@@ -7,7 +7,7 @@
 <html>
   <head>
  
-    <base href="${basePath}">
+    <base href="${sessionScope.basePath}">
     <c:if test="${empty sessionScope.curUser}">
      <script>
       location="../../index.jsp"
@@ -66,7 +66,7 @@
                       </a>
                       
                       <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-                         <li><a href="SignStatistics" tabindex="-1" data-toggle="tab">
+                         <li><a href="SignStatistics">
                                                                                                    历史签到记录</a>
                           </li>
                             <li><a href="#statistics_second" tabindex="-1" data-toggle="tab">
@@ -238,9 +238,9 @@
 				labels : [<%=lessons%>],
 				datasets : [
 					{
-						fillColor : "#8470ff",
-						strokeColor : "#8470ff",
-						pointColor : "#8470ff",
+						fillColor : "#337ab7",
+						strokeColor : "#337ab7",
+						pointColor : "#337ab7",
 						pointStrokeColor : "#fff",
 						data : [<%=datas%>]
 					}
@@ -268,3 +268,4 @@
 
 </html>
 
+<!--  

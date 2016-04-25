@@ -23,10 +23,12 @@ import com.wx.daoImpl.TClassStudentDaoImpl;
 import com.wx.daoImpl.TeacherInfoDaoImpl;
 import com.wx.util.ClearApplicationData;
 import com.wx.util.Consts;
+import com.wx.util.Data;
 import com.wx.util.Process;
 import com.wx.util.ReceiveParse;
 import com.wx.util.ReplyContent;
 import com.wx.util.SignUtil;
+
 
 /**
  * Servlet implementation class CheckServlet
@@ -113,7 +115,7 @@ public class CheckServlet extends HttpServlet {
            String sid=lessonSidListDao.checkOpenID(lessonID,fromUserName);
            if(!sid.equals("null"))    //openID与sid已绑定
            {
-        	   if(content.startsWith("Q:")||content.startsWith("q:"))
+        	   if(content.startsWith("Q:")||content.startsWith("q:")||content.startsWith("Q：")||content.startsWith("q："))
         	   {
         		   Process.feedBack(request, response, xmlMap, sid);
         		   return;
@@ -143,18 +145,44 @@ public class CheckServlet extends HttpServlet {
            }
            else       //未绑定
            {
-        	   if(tClassStudentDao.checkUserId(classID, content))
+        	   if(tClassStudentDao.checkUserId(classID, content)) // 学生ID正确
                {
-            	   lessonSidListDao.add(lessonID, content, fromUserName);
-            	   String sName=studentInfoDao.getNameById(content);
-            	   String t="该ID为学生,成功进入课堂,用户名:"+sName;
-            	   String replyContent="课堂中可随时提出问题,发送问题格式  Q:内容";
-             	   String xml=ReplyContent.generateXML(fromUserName, toUserName, t, replyContent);
-             	   response.getWriter().write(xml);
-                   
+        		   if(lessonSidListDao.checkSid(lessonID, content))
+        		   {
+        			   String replyContent="该ID已在其他终端登录,请提供其他ID!";
+                       String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
+                       response.getWriter().write(xml); 
+                       return;
+        		   }
+        		   if(Data.stagedOpenIDList.containsKey(fromUserName))
+        		   {
+        			   Data.stagedOpenIDList.remove(fromUserName);
+        			   lessonSidListDao.add(lessonID, content, fromUserName);
+                	   String sName=studentInfoDao.getNameById(content);
+                	   String t="该ID为学生,成功进入课堂,用户名:"+sName;
+                	   String replyContent="课堂中可随时提出问题,发送问题格式  Q:内容";
+                 	   String xml=ReplyContent.generateXML(fromUserName, toUserName, t, replyContent);
+                 	   response.getWriter().write(xml);
+        		   }  
+        		   else
+        		   {
+        			   
+        			   Data.stagedOpenIDList.put(fromUserName, "");
+        			   String t="确认以ID:"+content+"进入当前课堂?";
+                	   String replyContent="确认请继续发送该ID,发送其余内容可取消";
+                 	   String xml=ReplyContent.generateXML(fromUserName, toUserName, t, replyContent);
+                 	   response.getWriter().write(xml);
+        		   }
                }
                else
                {
+            	   if(Data.stagedOpenIDList.containsKey(fromUserName))
+            	   {
+            		   Data.stagedOpenIDList.remove(fromUserName);
+            		   String replyContent="取消成功,请提供正确的学生ID";
+                       String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
+                       response.getWriter().write(xml);
+            	   }
             	   String replyContent="请提供正确的学生ID";
                    String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
                    response.getWriter().write(xml);

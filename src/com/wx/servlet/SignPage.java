@@ -17,6 +17,7 @@ import com.wx.daoImpl.LessonAbsenceSidListDaoImpl;
 import com.wx.daoImpl.LessonSignRecordDaoImpl;
 import com.wx.daoImpl.TeachClassDaoImpl;
 import com.wx.util.TableGenerator;
+import com.wx.util.Test;
 
 
 /**
@@ -62,7 +63,8 @@ public class SignPage extends HttpServlet {
 			list.add(s[1]);
 			total=Integer.parseInt(s[1]);
 			String s1=String.format("%.1f", 100.0*signNum/(double)total)+"%";
-			list.add(s1);			
+			list.add(s1);
+			Test.log(list.get(2));
 			signStatistics1_firstTable_content.add(list);
 		}
 		String signStatistics1_firstTable=TableGenerator.generateTable("课程描述", 3, new String[]{"课程名","总人数","平均出勤率"}, signStatistics1_firstTable_content);

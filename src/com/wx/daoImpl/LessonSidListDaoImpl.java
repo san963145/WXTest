@@ -113,4 +113,34 @@ public class LessonSidListDaoImpl implements LessonSidListDao{
 		  return 0;
 	}
 
+	@Override
+	public boolean checkSid(long lessonID, String sid) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection();					
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("select * from LessonSidList where LESSONID=? and SID=?");
+			ps.setLong(1, lessonID);
+			ps.setString(2, sid);
+			ps.execute();
+			ResultSet rs=ps.getResultSet();
+			if(rs.next())
+			{
+				return true;
+			}	
+		} catch(Exception e)
+		  {
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		  return false;
+	}
+
 }

@@ -30,9 +30,7 @@ public class FeedBackDaoImpl implements FeedBackDao{
 			ps.setString(2, sid);
 			ps.setString(3, content);
 			ps.setString(4, time);
-			Test.log("Feed: "+" "+lessonID+" "+sid+" "+content+" "+time);
 			ps.execute();
-			Test.log("Feed add end");
 			conn.commit();
 			return true;
 		}  catch(Exception e)

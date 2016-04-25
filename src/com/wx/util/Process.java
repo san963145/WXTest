@@ -131,9 +131,13 @@ public class Process {
         String c=(String) application.getAttribute("title");
         String title=c.split("#")[0];
         String titleContent=c.split("#")[1];
-        if(content.startsWith("A:")||content.startsWith("a:"))
+        if(content.startsWith("A:")||content.startsWith("a:")||content.startsWith("A£º")||content.startsWith("a£º"))
         {
-        	String reAnswer=content.split(":")[1];
+        	String reAnswer="";
+        	if(content.startsWith("A:")||content.startsWith("a:"))
+        	   reAnswer=content.split(":")[1];
+        	else 
+        		reAnswer=content.split("£º")[1];
         	StudentAnswerDao dao=new StudentAnswerDaoImpl();
         	int corrected=0;
         	if(answer.equalsIgnoreCase(reAnswer))
@@ -178,9 +182,13 @@ public class Process {
         String content=map.get("content");
         ServletContext application=(ServletContext) request.getServletContext();
         long lessonID=(long) application.getAttribute("lessonID");
-        if(content.startsWith("Q:")||content.startsWith("q:"))
+        if(content.startsWith("Q:")||content.startsWith("q:")||content.startsWith("Q£º")||content.startsWith("q£º"))
         {
-        	String question=content.split(":")[1];
+        	String question="";
+        	if(content.startsWith("Q:")||content.startsWith("q:"))
+        	   question=content.split(":")[1];
+        	else 
+        		question=content.split("£º")[1];
         	FeedBackDao dao=new FeedBackDaoImpl();
         	Time time=new Time(System.currentTimeMillis());
         	boolean flag=dao.add(lessonID, userID, question, time.toString()); 

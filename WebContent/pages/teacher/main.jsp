@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="${basePath}">
+    <base href="${sessionScope.basePath}">
     
     <c:if test="${empty sessionScope.curUser}">
      <script>
@@ -141,3 +141,4 @@
   </body>
 </html>
 
+<!--  

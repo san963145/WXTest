@@ -6,7 +6,7 @@
 <html>
   <head>
  
-    <base href="${basePath}">
+    <base href="${sessionScope.basePath}">
     <c:if test="${empty sessionScope.curUser}">
      <script>
       location="../../index.jsp"
@@ -102,3 +102,4 @@
 	</div>		
  </body>
 </html>
+<!--  
