@@ -6,6 +6,11 @@
    String path = request.getContextPath();
    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
    session.setAttribute("basePath", basePath);   
+   String tOpenID=request.getParameter("tOpenID");
+   if(tOpenID!=null)
+   {
+	   session.setAttribute("tOpenID", tOpenID);
+   }
 %>
 
 <!DOCTYPE html>
@@ -121,7 +126,16 @@
             alert("系统忙！");
          </script>
      </c:if>
+     <c:if test="${result=='repeatLogin'}">
+         <script charset="UTF-8">
+            alert("该ID已在其他终端登录,请勿重复登录！");
+         </script>
+     </c:if>
+     <c:if test="${result=='tOpenIDError'}">
+         <script charset="UTF-8">
+            alert("系统未设置该用户的OpenID绑定信息,请在微信客户端进行ID验证后登录！");
+         </script>
+     </c:if>
   </c:if>
 
 </html>
- 

@@ -64,7 +64,7 @@ function check()
 </script>
 </head>
 
-<body onload=getMode()> 
+<body onload="getMode()"> 
 
              <div>
                <h2 class="text-center">
@@ -230,6 +230,8 @@ function check()
 	  
 			
  </body>
+
+  
  <c:if test="${not empty result}">
      <c:choose>
      <c:when test="${result=='1'}">
@@ -238,9 +240,10 @@ function check()
          </script>
      </c:when>
      <c:otherwise>
-         <script charset="UTF-8">
-                alert("添加失败！");
+        <script charset="UTF-8">
+            alert("添加失败！");
          </script>
+        
      </c:otherwise>
      </c:choose>
   </c:if>

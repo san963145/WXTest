@@ -64,7 +64,7 @@ function check()
 </script>
 </head>
 
-<body onload=getMode()> 
+<body onload="getMode()"> 
 
              <div>
                <h2 class="text-center">

@@ -10,38 +10,7 @@ import com.wx.dao.StudentInfoDao;
 
 public class StudentInfoDaoImpl implements StudentInfoDao{
 	
-	public String checkStudentLogin(String sid,String spwd)
-	{	
-		Connection conn=MyConnManager.getConnection(); 	
-		try
-		{
-			PreparedStatement ps=conn.prepareStatement("select * from StudentInfo where SID=? and SPWDMD5=?");
-			ps.setString(1, sid);
-			ps.setString(2, spwd);
-			ps.execute();
-			ResultSet rs=ps.getResultSet();
-			String userName="null";
-			String openID="null";
-			if(rs.next())
-			{
-				userName=rs.getString("SName");
-				openID=rs.getString("OpenID");
-			}	
-			return  userName+"#"+openID;
-		}  catch(Exception e)
-		  {
-			e.printStackTrace();
-		  }		
-		   finally{
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		  }
-		  return "null";
-	}
+	
     public boolean checkUserId(String userId)
     {
     	Connection conn=MyConnManager.getConnection();					

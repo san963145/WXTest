@@ -74,6 +74,17 @@ public class Login extends HttpServlet {
 		HttpSession session=request.getSession();
 		String userID=request.getParameter("userID");
 		String password=request.getParameter("password");
+		String tOpenID=(String) session.getAttribute("tOpenID");
+		if(tOpenID==null)
+		{
+			request.setAttribute("result","tOpenIDError");
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+			return ;
+		}
+		else 
+		{
+			session.removeAttribute("tOpenID");
+		}
 		String result="null";
 		TeacherInfoDao dao=new TeacherInfoDaoImpl();
 		try {
@@ -91,7 +102,7 @@ public class Login extends HttpServlet {
 		else
 		{
 			ServletContext application=(ServletContext) request.getServletContext();
-			boolean isBusy=false;
+			int isBusy=0;
 			Long lessonID=(Long) application.getAttribute("lessonID");
 			if(lessonID!=null)
 			{
@@ -101,20 +112,30 @@ public class Login extends HttpServlet {
 					String curUserID=(String) application.getAttribute("curUser");
 					if(curUserID!=null)
 					{
-						if(!curUserID.equals(userID))
+						if(curUserID.equals(userID))
 						{
-							isBusy=true;
+							isBusy=2;
+						}
+						else
+						{
+							isBusy=1;
 						}
 					}
 				}
 			}
-			if(isBusy)
+			if(isBusy==1)
 			{
 				request.setAttribute("result","busy");
 				request.getRequestDispatcher("index.jsp").forward(request, response);
 				return ;
 			}
-			ClearApplicationData.clearWithoutTOpenID(application);
+			else if(isBusy==2)
+			{
+				request.setAttribute("result","repeatLogin");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
+				return ;
+			}
+			ClearApplicationData.clear(application);  //Çå³ýÏµÍ³application
 			TeachClassDao teachClassDao=new TeachClassDaoImpl();
 			Map<String, String> classMap=null;
 			if(result.equals("1"))
@@ -129,6 +150,7 @@ public class Login extends HttpServlet {
 			session.setAttribute("role", result);
 			session.setAttribute("curUser", userID);
 			application.setAttribute("curUser", userID);
+			application.setAttribute("tOpenID", tOpenID);
 			session.setMaxInactiveInterval(Consts.SESSIONTIME);
 			request.getRequestDispatcher("pages/teacher/enterClass.jsp").forward(request, response);
 		}		

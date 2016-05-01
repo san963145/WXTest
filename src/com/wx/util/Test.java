@@ -23,8 +23,8 @@ public class Test {
         System.out.println(s.substring(FromUserNameStartIndex,FromUserNameEndIndex));
         */
         StudentInfoDao dao=new StudentInfoDaoImpl();
-        String openID=dao.checkStudentLogin("1","1");
-        System.out.println("3 "+openID);
+        boolean result=dao.checkUserId("20120001");
+        System.out.println("result: "+result);
 		
 		
 	}

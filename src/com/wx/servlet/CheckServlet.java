@@ -20,6 +20,7 @@ import com.wx.dao.TeacherInfoDao;
 import com.wx.daoImpl.LessonSidListDaoImpl;
 import com.wx.daoImpl.StudentInfoDaoImpl;
 import com.wx.daoImpl.TClassStudentDaoImpl;
+import com.wx.daoImpl.TeachClassDaoImpl;
 import com.wx.daoImpl.TeacherInfoDaoImpl;
 import com.wx.util.ClearApplicationData;
 import com.wx.util.Consts;
@@ -103,15 +104,18 @@ public class CheckServlet extends HttpServlet {
                return ;
            }
            String tOpenID=(String) application.getAttribute("tOpenID");
-           if(fromUserName.equals(tOpenID))     //教师发送信息
+           if(fromUserName.equals(tOpenID))     //当前课堂未退出,教师openID已绑定,教师返回微信发送消息
            {
-        	  String title="教职工登录";
-         	  String url="http://1.myjavatest.applinzi.com/";
-         	  String replyContent="";
+        	  String r=new TeachClassDaoImpl().getNameAndTotalbyClass(classID);
+        	  String className=r.split("#")[0];
+        	  String title="返回当前课堂";
+         	  String url="http://1.myjavatest.applinzi.com/pages/teacher/main.jsp";
+         	  String replyContent="课程名:\r\n"+className;
          	  String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
          	  response.getWriter().write(xml);
          	  return ;
            }
+           
            String sid=lessonSidListDao.checkOpenID(lessonID,fromUserName);
            if(!sid.equals("null"))    //openID与sid已绑定
            {
@@ -193,10 +197,10 @@ public class CheckServlet extends HttpServlet {
         {
           if(teacherInfoDao.checkTid(content))
           {
-        	  application.setAttribute("tOpenID", fromUserName);
+        	 // application.setAttribute("tOpenID", fromUserName);
         	  String title="教职工登录";
-        	  String url="http://1.myjavatest.applinzi.com/";
-        	  String replyContent="";
+        	  String url="http://1.myjavatest.applinzi.com?tOpenID="+fromUserName;
+        	  String replyContent="当前终端OpenID:\r\n"+fromUserName;
         	  String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
         	  response.getWriter().write(xml);
           }

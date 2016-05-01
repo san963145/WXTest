@@ -2,6 +2,7 @@ package com.wx.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,10 +32,12 @@ public class Logout extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ClearApplicationData.clear(request.getServletContext());
+		ServletContext application=(ServletContext) request.getServletContext();
+		String tOpenID=(String) application.getAttribute("tOpenID");
+		ClearApplicationData.clear(application);
 		HttpSession session=request.getSession();
 		session.invalidate();
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		request.getRequestDispatcher("index.jsp?tOpenID="+tOpenID).forward(request, response);
 		
 	}
 
