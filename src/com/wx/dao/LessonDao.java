@@ -16,6 +16,8 @@ public interface LessonDao {
 	 *   查询tClass中距离当前时间最近的一个Lesson,返回LessonID
 	 */
 	public long getMaxLessonID(String classID);
+	
+	public void delete(long lessonID);
 
 
 }

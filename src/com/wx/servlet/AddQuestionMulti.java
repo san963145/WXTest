@@ -45,6 +45,11 @@ public class AddQuestionMulti extends HttpServlet {
 		ServletContext application=(ServletContext) request.getServletContext();
 		HttpSession session=request.getSession();
 		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		long lessonID=(long) application.getAttribute("lessonID");
 		String title=request.getParameter("title");
 		String content=request.getParameter("content");

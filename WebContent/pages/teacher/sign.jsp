@@ -8,12 +8,12 @@
   <head>
 
     <base href="${sessionScope.basePath}">
-    <c:if test="${empty sessionScope.curUser}">
-     <script>
-      location="../../index.jsp"
-    </script>
-    </c:if>
 
+    <c:if test="${empty sessionScope.curUser}">  
+       <script>
+           location="Logout";
+       </script>
+    </c:if>
     <meta charset="UTF-8">
     <title>课堂签到子系统</title>
 	 <!-- 禁缓存-->
@@ -93,7 +93,11 @@
                               返回上一级页面</a>
                           </li>
                             <li><a href="Logout" tabindex="-1">
-                               退出系统
+                               结束当前课堂
+                               </a>
+                             </li>
+                             <li><a href="DeleteLesson" tabindex="-1">
+                               删除当前课堂
                                </a>
                              </li>
                         </ul>

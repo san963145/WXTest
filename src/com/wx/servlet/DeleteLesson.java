@@ -1,7 +1,6 @@
 package com.wx.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,19 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.wx.util.Consts;
+import com.wx.dao.LessonDao;
+import com.wx.daoImpl.LessonAbsenceSidListDaoImpl;
+import com.wx.daoImpl.LessonDaoImpl;
+import com.wx.daoImpl.StudentCheckinDaoImpl;
 
 /**
- * Servlet implementation class StopSign
+ * Servlet implementation class DeleteLesson
  */
-@WebServlet("/StopSign")
-public class StopSign extends HttpServlet {
+@WebServlet("/DeleteLesson")
+public class DeleteLesson extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public StopSign() {
+    public DeleteLesson() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,13 +45,13 @@ public class StopSign extends HttpServlet {
 			return ;
 		}
 		ServletContext application=(ServletContext) request.getServletContext();
-        long initSignTime=(long) application.getAttribute("initSignTime");
-        initSignTime+=Consts.SIGNTIMELIMIT*60*1000;
-        application.setAttribute("initSignTime", initSignTime);
-        application.removeAttribute("randNum");
-		PrintWriter out=response.getWriter();
-		out.print("1");
-		out.close();
+		long lessonID=(long) application.getAttribute("lessonID");
+		LessonDao lessonDao=new LessonDaoImpl();
+		lessonDao.delete(lessonID);
+		new StudentCheckinDaoImpl().delete(lessonID);
+		new LessonAbsenceSidListDaoImpl().delete(lessonID);
+		request.getRequestDispatcher("Logout").forward(request, response);
+		
 	}
 
 	/**

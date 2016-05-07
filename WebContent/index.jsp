@@ -11,6 +11,10 @@
    {
 	   session.setAttribute("tOpenID", tOpenID);
    }
+   else
+   {
+	   session.removeAttribute("tOpenID");
+   }
 %>
 
 <!DOCTYPE html>

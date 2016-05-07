@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.wx.dao.LessonAbsenceSidListDao;
 import com.wx.dao.LessonSignRecordDao;
@@ -41,6 +42,13 @@ public class SignStatistics extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		HttpSession session=request.getSession();
+		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		ServletContext application=(ServletContext) request.getServletContext();
 		String tClassID=(String) application.getAttribute("classID");
 		LessonSignRecordDao lessonSignRecordDao=new LessonSignRecordDaoImpl();

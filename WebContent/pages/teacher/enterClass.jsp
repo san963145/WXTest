@@ -8,10 +8,11 @@
 <html>
   <head>
     <base href="${sessionScope.basePath}">
-    <c:if test="${empty sessionScope.curUser}">
-     <script>
-      location="../../index.jsp"
-    </script>
+
+    <c:if test="${empty sessionScope.curUser}">  
+       <script>
+           location="Logout";
+       </script>
     </c:if>
     
     <meta charset="UTF-8">

@@ -40,11 +40,17 @@ public class AddQuestion extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		ServletContext application=(ServletContext) request.getServletContext();
 		HttpSession session=request.getSession();
 		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		long lessonID=(long) application.getAttribute("lessonID");
 		String title=request.getParameter("title");
 		String content=request.getParameter("content");

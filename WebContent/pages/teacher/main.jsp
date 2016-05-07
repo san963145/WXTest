@@ -7,14 +7,27 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <base href="${sessionScope.basePath}">
-    
-    <c:if test="${empty sessionScope.curUser}">
-     <script>
-      location="../../index.jsp"
-    </script>
+
+
+ <c:if test="${empty sessionScope.curUser}">  
+       <script>
+           location="Logout";
+       </script>
     </c:if>
-    
+
+
+<c:if test="${empty applicationScope.classID}">
+<%String curUser=(String)application.getAttribute("curUser");%>
+          <script>
+              location="BackToChooseClass?userID=<%=curUser%>";
+          </script>
+ </c:if>
+
+
+
+
     <meta charset="UTF-8">
     <title>课堂互动系统</title>
 	 <!-- 禁缓存-->
@@ -54,7 +67,7 @@
     
         <div>	
            <div class="box-set box-div bg-red">
-			  <a href="ConfigPage">
+			  <div onclick="javascript:window.location.href='ConfigPage'" style="cursor:pointer">
 				 <!-- small box -->
 				  <div class="small-box bg-red">
 					<div class="box-div">
@@ -66,11 +79,11 @@
 					</div>
 					<a href="ConfigPage" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
-			  </a>
+			  </div>
 			</div>	
         	
 			<div class="box-set box-div bg-blue">
-			  <a href="SignPage">
+			  <div onclick="javascript:window.location.href='SignPage'" style="cursor:pointer">
 				<!-- small box -->
 				  <div class="small-box bg-blue">
 					<div class="box-div">
@@ -82,11 +95,11 @@
 					</div>
 					<a href="SignPage" class="small-box-footer">进入系统<i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
-			  </a>
+			  </div>
 			</div>
 			
 			<div class="box-set box-div bg-yellow">
-			  <a href="TestPage">
+			  <div onclick="javascript:window.location.href='TestPage'" style="cursor:pointer">
 				 <!-- small box -->
 				  <div class="small-box bg-yellow">
 					<div class="box-div">
@@ -98,11 +111,11 @@
 					</div>
 					<a href="TestPage" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
-			  </a>
+			  </div>
 			</div>
 	
 			<div class="box-set box-div bg-green">
-			  <a href="pages/teacher/feedBack.jsp">
+			  <div onclick="javascript:window.location.href='pages/teacher/feedBack.jsp'" style="cursor:pointer">
 				 <!-- small box -->
 				  <div class="small-box bg-green">
 					<div class="box-div">
@@ -114,7 +127,7 @@
 					</div>
 					<a href="pages/teacher/feedBack.jsp" class="small-box-footer">进入系统 <i class="fa fa-arrow-circle-right"></i></a>
 				  </div>
-			  </a>
+			  </div>
 			</div>
 			
 												
@@ -132,7 +145,7 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <!-- FastClick 
 
-    <script src="plugins/fastclick/fastclick.min.js"></script>
+    <script src="../../plugins/fastclick/fastclick.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/app.min.js"></script>
 

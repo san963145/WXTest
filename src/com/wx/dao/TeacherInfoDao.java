@@ -11,6 +11,11 @@ public interface TeacherInfoDao {
 	public String checkTeacherLogin(String tid,String tpwd);
 	
 	/**
+	 *  教师登录判断
+	 */
+	public String getRole(String tid);
+	
+	/**
 	 *  判断教师ID是否存在
 	 */
 	public boolean checkTid(String tid);

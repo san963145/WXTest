@@ -50,6 +50,12 @@ public class AddUser extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		HttpSession session=request.getSession();
+		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		Map<String, String> classMap=(Map<String, String>) session.getAttribute("classMap");
 		String userID=request.getParameter("userID");
 		String password=request.getParameter("password");

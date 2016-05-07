@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,8 +37,21 @@ public class Logout extends HttpServlet {
 		String tOpenID=(String) application.getAttribute("tOpenID");
 		ClearApplicationData.clear(application);
 		HttpSession session=request.getSession();
+		Cookie[] cookies=request.getCookies();
+		for(Cookie c : cookies)
+		{
+				c.setMaxAge(0);
+				response.addCookie(c);
+		}
 		session.invalidate();
-		request.getRequestDispatcher("index.jsp?tOpenID="+tOpenID).forward(request, response);
+		if(tOpenID!=null)
+		{
+		   request.getRequestDispatcher("index.jsp?tOpenID="+tOpenID).forward(request, response);
+		}
+		else
+		{
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
 		
 	}
 

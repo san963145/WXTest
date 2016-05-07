@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class SetMode
@@ -32,6 +33,13 @@ public class SetMode extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		HttpSession session=request.getSession();
+		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		ServletContext application=(ServletContext) request.getServletContext();		
 		String mode=(String)request.getParameter("mode");
 		PrintWriter out=response.getWriter();

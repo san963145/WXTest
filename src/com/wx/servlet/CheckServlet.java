@@ -195,21 +195,32 @@ public class CheckServlet extends HttpServlet {
         }
         else      //课程未开启
         {
-          if(teacherInfoDao.checkTid(content))
-          {
+        	String tOpenID=(String) application.getAttribute("tOpenID");        	
+            if(fromUserName.equals(tOpenID))     //由课程选择页面退回微信界面
+            {
+              String userID=(String) application.getAttribute("curUser");
+              String title="返回课程选择页面";
+          	  String url="http://1.myjavatest.applinzi.com/BackToChooseClass?userID="+userID;
+          	  String replyContent="该终端已登录,未选择课程";
+          	  String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
+          	  response.getWriter().write(xml);
+          	  return ;
+            }
+            if(teacherInfoDao.checkTid(content))
+            {
         	 // application.setAttribute("tOpenID", fromUserName);
         	  String title="教职工登录";
         	  String url="http://1.myjavatest.applinzi.com?tOpenID="+fromUserName;
         	  String replyContent="当前终端OpenID:\r\n"+fromUserName;
         	  String xml=ReplyContent.generateXML(fromUserName, toUserName, title, replyContent, url);
         	  response.getWriter().write(xml);
-          }
-          else
-          {
+            }
+            else
+            {
         	  String replyContent="系统当前未开启任何课堂,请提供教职工ID";
               String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
               response.getWriter().write(xml); 
-          }          
+            }          
         }
 	}
 

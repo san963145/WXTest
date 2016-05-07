@@ -36,8 +36,14 @@ public class TestPage extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		ServletContext application=(ServletContext) request.getServletContext();
 		HttpSession session=request.getSession();
+		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
+		ServletContext application=(ServletContext) request.getServletContext();
 		long lessonID=(long) application.getAttribute("lessonID");
 		QuestionDao questionDao=new QuestionDaoImpl();
 		ArrayList<String> questionList=questionDao.getTitlesByLesson(lessonID);

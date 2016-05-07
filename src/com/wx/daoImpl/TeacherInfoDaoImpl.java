@@ -118,4 +118,36 @@ public class TeacherInfoDaoImpl implements TeacherInfoDao{
 		return false;
 	}
 
+	@Override
+	public String getRole(String tid) {
+		// TODO Auto-generated method stub
+		Connection conn=MyConnManager.getConnection(); 	
+		try
+		{
+			PreparedStatement ps=conn.prepareStatement("select * from TeacherInfo where TID=?");
+			ps.setString(1, tid);
+			ps.execute();
+			ResultSet rs=ps.getResultSet();
+			String role="";
+			if(rs.next())
+			{
+				Integer r=rs.getInt("ROLE");
+				role=r.toString();
+			}	
+			return  role;
+		}  catch(Exception e)
+		  {
+			e.printStackTrace();
+		  }		
+		   finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		  return "";
+	}
+
 }

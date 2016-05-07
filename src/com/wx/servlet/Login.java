@@ -19,6 +19,7 @@ import com.wx.daoImpl.TeachClassDaoImpl;
 import com.wx.daoImpl.TeacherInfoDaoImpl;
 import com.wx.util.ClearApplicationData;
 import com.wx.util.Consts;
+import com.wx.util.Test;
 
 
 
@@ -48,18 +49,9 @@ public class Login extends HttpServlet {
 		String classID=request.getParameter("classID");		
 		application.setAttribute("classID", classID);
 		LessonDao lessonDao=new LessonDaoImpl();
-		long maxLessonID=lessonDao.getMaxLessonID(classID);
-		long curTime=System.currentTimeMillis();
-		if(curTime-maxLessonID>Consts.LESSONINTERVALTIME*60*1000)
-		{
-			lessonDao.add(classID);
-			long curLessonID=lessonDao.getMaxLessonID(classID);
-			application.setAttribute("lessonID", curLessonID);
-		}
-		else
-		{			
-			application.setAttribute("lessonID", maxLessonID);
-		}
+		lessonDao.add(classID);
+		long curLessonID=lessonDao.getMaxLessonID(classID);
+		application.setAttribute("lessonID", curLessonID);
 
 		request.getRequestDispatcher("pages/teacher/main.jsp").forward(request, response);		
 	}
@@ -146,6 +138,7 @@ public class Login extends HttpServlet {
 			{
 				classMap=teachClassDao.getClassListByTutorID(userID);
 			}
+			Test.log("Result: "+result);
 			request.setAttribute("classMap",classMap);
 			session.setAttribute("role", result);
 			session.setAttribute("curUser", userID);

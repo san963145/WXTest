@@ -36,6 +36,12 @@ public class ConfigPage extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		HttpSession session=request.getSession();
+		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		TeachClassDao teachClassDao=new TeachClassDaoImpl();
 		String userID=(String) session.getAttribute("curUser");
 		Map<String, String> classMap=teachClassDao.getClassListByTid(userID);

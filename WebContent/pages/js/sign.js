@@ -72,8 +72,11 @@ function update()
 			//document.getElementById("textarea").innerHTML+=x.responseText;
 			signTimeLimit=parseInt(x.responseText)*60;
 			watch=setInterval("cal()",1000);
+			getStudentSignList();
 			interval=setInterval("getStudentSignList()",2000);
 			timer=setTimeout(getAbsenceList, 2*60*1000);
+			document.getElementById("textarea").innerHTML="";
+			document.getElementById("textarea2").innerHTML="";
 			alert("设置成功！");
 		}
 

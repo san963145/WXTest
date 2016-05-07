@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.wx.dao.LessonSidListDao;
 import com.wx.dao.QuestionDao;
@@ -41,6 +42,13 @@ public class TestControl extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		HttpSession session=request.getSession();
+		String tid=(String) session.getAttribute("curUser");
+		if(tid==null)
+		{
+			request.getRequestDispatcher("Logout").forward(request, response);
+			return ;
+		}
 		ServletContext application=(ServletContext) request.getServletContext();
 		long lessonID=(long) application.getAttribute("lessonID");
 		String parameter=(String)request.getParameter("parameter");

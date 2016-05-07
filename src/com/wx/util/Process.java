@@ -129,8 +129,18 @@ public class Process {
         long qid=(long) application.getAttribute("qid");
         String answer=(String) application.getAttribute("answer");
         String c=(String) application.getAttribute("title");
-        String title=c.split("#")[0];
-        String titleContent=c.split("#")[1];
+        String [] st=c.split("#");
+        String title="";
+        String titleContent="无内容";
+        if(st.length<2)
+        {
+           title=st[0];        
+        }
+        else
+        {
+          title=st[0];
+          titleContent=st[1];
+        }
         if(content.startsWith("A:")||content.startsWith("a:")||content.startsWith("A：")||content.startsWith("a："))
         {
         	String reAnswer="";
@@ -165,6 +175,7 @@ public class Process {
         }
         else
         {
+        	Test.log("suc");
         	String t="当前为答题模式,教师已发布题目.答题请以格式  A:答案 发送";
       	    String replyContent="题目标题:"+title+"\r\n内容:"+titleContent;
       	    String xml=ReplyContent.generateXML(fromUserName, toUserName, t, replyContent);
