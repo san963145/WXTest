@@ -3,6 +3,7 @@ var interval;
 var timer;
 var watch;
 var signTimeLimit;
+var signFlag=0;
 function init()
 {
 	if(window.XMLHttpRequest)
@@ -71,12 +72,14 @@ function update()
 		{
 			//document.getElementById("textarea").innerHTML+=x.responseText;
 			signTimeLimit=parseInt(x.responseText)*60;
+			var timeLimit=signTimeLimit;
 			watch=setInterval("cal()",1000);
 			getStudentSignList();
 			interval=setInterval("getStudentSignList()",2000);
-			timer=setTimeout(getAbsenceList, 2*60*1000);
+			timer=setTimeout(stopSign, timeLimit*1000);
 			document.getElementById("textarea").innerHTML="";
 			document.getElementById("textarea2").innerHTML="";
+			signFlag=1;
 			alert("设置成功！");
 		}
 
@@ -138,6 +141,11 @@ function getAbsenceListResult()
 }
 function stopSign()
 {
+	if(signFlag==0)
+	{
+		alert("签到未开始");
+		return;
+	}
 	if(confirm("确定终止签到？"))
 	{
 		x.open("GET","StopSign",true);
@@ -154,7 +162,11 @@ function stopSignResult()
 		clearInterval(watch);
 		clearTimeout(timer);		
 		getAbsenceList();		
-		
+		signFlag=0;
+	}
+	else
+	{
+		alert("签到未开始");
 	}
 }
 function cal()

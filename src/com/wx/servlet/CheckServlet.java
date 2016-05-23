@@ -160,6 +160,15 @@ public class CheckServlet extends HttpServlet {
         		   }
         		   if(Data.stagedOpenIDList.containsKey(fromUserName))
         		   {
+        			   String sUser=Data.stagedOpenIDList.get(fromUserName);
+        			   if(!sUser.equals(content))
+        			   {
+        				   Data.stagedOpenIDList.remove(fromUserName);
+                		   String replyContent="取消成功,请提供正确的学生ID";
+                           String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
+                           response.getWriter().write(xml);
+                           return;
+        			   }
         			   Data.stagedOpenIDList.remove(fromUserName);
         			   lessonSidListDao.add(lessonID, content, fromUserName);
                 	   String sName=studentInfoDao.getNameById(content);
@@ -171,7 +180,7 @@ public class CheckServlet extends HttpServlet {
         		   else
         		   {
         			   
-        			   Data.stagedOpenIDList.put(fromUserName, "");
+        			   Data.stagedOpenIDList.put(fromUserName, content);
         			   String t="确认以ID:"+content+"进入当前课堂?";
                 	   String replyContent="确认请继续发送该ID,发送其余内容可取消";
                  	   String xml=ReplyContent.generateXML(fromUserName, toUserName, t, replyContent);
@@ -186,6 +195,7 @@ public class CheckServlet extends HttpServlet {
             		   String replyContent="取消成功,请提供正确的学生ID";
                        String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);
                        response.getWriter().write(xml);
+                       return;
             	   }
             	   String replyContent="请提供正确的学生ID";
                    String xml=ReplyContent.generateXML(fromUserName, toUserName,replyContent);

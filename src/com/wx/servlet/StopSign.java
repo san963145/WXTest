@@ -43,7 +43,14 @@ public class StopSign extends HttpServlet {
 			return ;
 		}
 		ServletContext application=(ServletContext) request.getServletContext();
-        long initSignTime=(long) application.getAttribute("initSignTime");
+        Long initSignTime=(Long) application.getAttribute("initSignTime");
+        if(initSignTime==null)
+        {
+        	PrintWriter out=response.getWriter();
+    		out.print("error");
+    		out.close();
+    		return;
+        }
         initSignTime+=Consts.SIGNTIMELIMIT*60*1000;
         application.setAttribute("initSignTime", initSignTime);
         application.removeAttribute("randNum");

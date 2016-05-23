@@ -19,7 +19,7 @@ import com.wx.daoImpl.TeachClassDaoImpl;
 import com.wx.daoImpl.TeacherInfoDaoImpl;
 import com.wx.util.ClearApplicationData;
 import com.wx.util.Consts;
-import com.wx.util.Test;
+
 
 
 
@@ -138,7 +138,6 @@ public class Login extends HttpServlet {
 			{
 				classMap=teachClassDao.getClassListByTutorID(userID);
 			}
-			Test.log("Result: "+result);
 			request.setAttribute("classMap",classMap);
 			session.setAttribute("role", result);
 			session.setAttribute("curUser", userID);

@@ -20,7 +20,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="${sessionScope.basePath }>">
+    <base href="${sessionScope.basePath }">
     <meta charset="UTF-8">
     <title>课堂互动系统</title>
 	<!-- 禁缓存-->
@@ -48,16 +48,12 @@
   </head>
   
    <script charset="UTF-8">  
-    var flag=0;
+
 	function check()
 	{
-		if(flag==1)
-		{
-			return false;
-		}
 		var userID=document.getElementById("userID").value;
 		var password=document.getElementById("password").value;
-		if(userName=="")
+		if(userID=="")
 	    {
 			alert("请输入用户名!");
 			return false;
@@ -73,11 +69,7 @@
 		}
 	}
 	
-	function register()
-	{
-		flag=1;
-		location="register.jsp";
-	}
+
 	
   </script>
   

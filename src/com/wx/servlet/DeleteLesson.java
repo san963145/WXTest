@@ -45,11 +45,14 @@ public class DeleteLesson extends HttpServlet {
 			return ;
 		}
 		ServletContext application=(ServletContext) request.getServletContext();
-		long lessonID=(long) application.getAttribute("lessonID");
-		LessonDao lessonDao=new LessonDaoImpl();
-		lessonDao.delete(lessonID);
-		new StudentCheckinDaoImpl().delete(lessonID);
-		new LessonAbsenceSidListDaoImpl().delete(lessonID);
+		Long lessonID=(long) application.getAttribute("lessonID");
+		if(lessonID!=null)
+		{
+		   LessonDao lessonDao=new LessonDaoImpl();
+		   lessonDao.delete(lessonID);
+		   new StudentCheckinDaoImpl().delete(lessonID);
+		   new LessonAbsenceSidListDaoImpl().delete(lessonID);
+		}
 		request.getRequestDispatcher("Logout").forward(request, response);
 		
 	}
