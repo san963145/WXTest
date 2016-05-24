@@ -22,7 +22,6 @@ public class Process {
 	
 	
 	
-	@SuppressWarnings("unchecked")
 	public static void sign(HttpServletRequest request, HttpServletResponse response,Map<String,String> map,String userID) throws IOException
 	{
 		String toUserName=map.get("toUserName");
@@ -132,10 +131,10 @@ public class Process {
         String c=(String) application.getAttribute("title");
         if(c==null||qid==null)
         {
-        	String c2="当前为问答模式，等待教师发布题目";
-        	String replyContent=ReplyContent.generateXML(fromUserName, toUserName, c2);
-            response.getWriter().write(replyContent);
-            return;
+        	 String c2="当前为问答模式，等待教师发布题目";
+        	 String replyContent=ReplyContent.generateXML(fromUserName, toUserName, c2);
+        	 response.getWriter().write(replyContent);
+        	 return;
         }
         String [] st=c.split("#");
         String title="";

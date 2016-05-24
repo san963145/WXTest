@@ -56,7 +56,6 @@ public class AddUser extends HttpServlet {
 			request.getRequestDispatcher("Logout").forward(request, response);
 			return ;
 		}
-		@SuppressWarnings("unchecked")
 		Map<String, String> classMap=(Map<String, String>) session.getAttribute("classMap");
 		String userID=request.getParameter("userID");
 		String password=request.getParameter("password");
