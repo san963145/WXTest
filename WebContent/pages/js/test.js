@@ -1,7 +1,6 @@
 var x;
 var y;
 var interval;
-var testFlag=0;
 function start()      //开始
 {
 	var title=document.getElementById("question").value;
@@ -35,7 +34,6 @@ function startTestResult()
 		if(x.responseText=="success")      
 		{
 			interval=setInterval("getAnswer()",2000);
-			testFlag=1;
 			alert("已开始接收答案！");
 		}
 		else
@@ -63,7 +61,7 @@ function getAnswerResult()
 		list=array[1].split("#");
 		if(data.length>0)
 		{
-			var s="在线人数:"+data[0]+",答题人数:"+data[1];
+			var s="当前Lesson在线人数:"+data[0]+",已参与答题人数:"+data[1];
 			document.getElementById("watch").innerHTML=s;
 		}
 		document.getElementById("textarea").innerHTML="";
@@ -76,25 +74,15 @@ function getAnswerResult()
 }
 function stop()    //刷新
 {
-	if(testFlag==0)
-	{
-		alert("答题未开始");
-		return;
-	}	
-	if(confirm("确定终止签到？"))
-	{
-		clearInterval(interval);
-		y.open("GET","TestControl?parameter=stop",true);
-		y.onreadystatechange=stopTestResult;
-		y.send();
-	}
-	
+	clearInterval(interval);
+	y.open("GET","TestControl?parameter=stop",true);
+	y.onreadystatechange=stopTestResult;
+	y.send();
 }
 function stopTestResult()
 {
 	if(y.readyState==4 && y.status==200)
 	{
-		testFlag=0;
 		alert("已关闭答题！");	
 	}
 }

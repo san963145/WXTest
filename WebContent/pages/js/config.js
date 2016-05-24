@@ -55,12 +55,12 @@ function update()
 	}
 	else if(x.responseText=="option2")
 	{
-		document.getElementById("curMode").innerHTML="<b>系统当前为选择题模式</b>";
+		document.getElementById("curMode").innerHTML="<b>系统当前为答题模式</b>";
 		alert("系统已设定为答题模式!");
 	}
 	else if(x.responseText=="option3")
 	{
-		document.getElementById("curMode").innerHTML="<b>系统当前为简答题模式</b>";
+		document.getElementById("curMode").innerHTML="<b>系统当前为反馈模式</b>";
 		alert("系统已设定为问题反馈模式!");
 	}
 }
@@ -94,17 +94,17 @@ function getMode()
 }
 function update3()
 {
-	if(x.responseText=="1")
+	if(x.responseText=="option1")
 	{
 		document.getElementById("curMode").innerHTML="<b>系统当前为签到模式</b>";
 	}
-	else if(x.responseText=="2")
+	else if(x.responseText=="option2")
 	{
-		document.getElementById("curMode").innerHTML="<b>系统当前为选择题模式</b>";
+		document.getElementById("curMode").innerHTML="<b>系统当前为答题模式</b>";
 	}
-	else if(x.responseText=="3")
+	else if(x.responseText=="option3")
 	{
-		document.getElementById("curMode").innerHTML="<b>系统当前为简答题模式</b>";
+		document.getElementById("curMode").innerHTML="<b>系统当前为反馈模式</b>";
 	}
 	else
 	{
